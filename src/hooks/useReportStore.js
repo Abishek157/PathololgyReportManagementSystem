@@ -34,16 +34,13 @@ const useReportStore = create((set) => ({
     })),
   updateReportKey: (path, value) =>
     set((state) => {
-      const keys = path.split("."); // Split the path to handle nested objects
+      const keys = path.split(".");
       const updatedReport = { ...state.report };
-
-      // Iterate through keys and update the value
       let current = updatedReport;
       for (let i = 0; i < keys.length - 1; i++) {
         current = current[keys[i]];
       }
-      current[keys[keys.length - 1]] = value; // Update the last key
-
+      current[keys[keys.length - 1]] = value;
       return { report: updatedReport };
     }),
 }));

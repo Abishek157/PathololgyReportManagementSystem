@@ -8,9 +8,9 @@ const CreateReportPatientPage = () => {
   const { patientData, setPatientData, setExaminationIds } = usePatientData();
 
   const handleButtonClick = async (event) => {
-    event.preventDefault();
+    console.log("Button clicked");
     const payload = patientData;
-    await FetchAddPatientReportDeatilsAPI(payload);
+    const result = await FetchAddPatientReportDeatilsAPI(payload);
   };
 
   return (

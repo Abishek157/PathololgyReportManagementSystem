@@ -2,16 +2,18 @@ import { TextInput, Button, NumberInput } from "@mantine/core";
 import useReportStore from "../hooks/useReportStore";
 import DisplayPatientReportExaminationDetails from "./DisplayPatientReportExaminationDetails";
 import fetchEditReportAPI from "../containers/fetchEditReportAPI";
+import useRouteStore from "../hooks/useRouteStore";
 
 const EditPatientReportPage = () => {
   const { report, setPatientDetails } = useReportStore();
+  const { selectedRoute, setSelectedRoute } = useRouteStore();
 
   const handleChange = (field, value) => {
     setPatientDetails({ [field]: value });
   };
-
   const setUpateReport = async () => {
-    const result = await fetchEditReportAPI(report.reportDetails.report_id);
+    await fetchEditReportAPI(report.reportDetails.report_id);
+    setSelectedRoute("ViewReports");
   };
 
   return (

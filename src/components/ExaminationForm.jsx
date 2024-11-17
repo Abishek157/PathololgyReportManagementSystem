@@ -30,11 +30,10 @@ const ExaminationForm = ({
   useEffect(() => {
     const fetchData = async () => {
       const result = await fetchReportTypeAPI();
-      setreportTypes(result.result);
-      const selectedType = result.result.find(
+      setreportTypes(result);
+      const selectedType = result.find(
         (item) => item.id === selectedReportTypeId
       );
-
       if (selectedType) {
         setSelectedReportTypeName(selectedType.name);
       }
@@ -46,7 +45,6 @@ const ExaminationForm = ({
     onDropdownClose: () => combobox.resetSelectedOption(),
     onDropdownOpen: () => {},
   });
-
   const options = reportTypes.map((item) => (
     <Combobox.Option value={item.name} key={item.name}>
       {item.name}

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const usePathologyLogin = () => {
@@ -8,11 +9,11 @@ const usePathologyLogin = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     const payload = {
       email: email,
       password: password,
     };
-    console.log(payload);
 
     try {
       const response = await fetch("http://localhost:3000/pathologylogin", {
@@ -23,12 +24,14 @@ const usePathologyLogin = () => {
         body: JSON.stringify(payload),
         credentials: "include",
       });
+      const data = await response.json();
+      console.log(data);
+
       if (response.ok) {
-        const data = await response.json();
-        console.log(data);
+        toast.success(`logged in successfully`);
         naviagte("/");
       } else {
-        console.error("Login failed:", response.statusText);
+        toast.error(data.message);
       }
     } catch (error) {
       console.error("Error:", error);

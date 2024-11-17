@@ -49,20 +49,14 @@ const DisplayExaminationsDetails = () => {
   const handleDelete = async (id) => {
     try {
       const result = await deleteExaminationAPI(id);
-
-      // Set the notification state to show it after successful deletion
       setNotification({
         title: "Examination Deleted",
-        message:
-          "The examination was successfully deleted. Please give a star to Mantine on GitHub!",
+        message: "The examination was successfully deleted.",
         color: "green",
       });
-
-      // Remove the deleted examination from the state
       setData((prevData) => prevData.filter((item) => item.id !== id));
     } catch (err) {
       console.error("Error deleting examination:", err);
-      // Handle error notification if needed
       setNotification({
         title: "Error",
         message: "There was an issue deleting the examination.",
@@ -83,7 +77,11 @@ const DisplayExaminationsDetails = () => {
           centered
           title="Update Examination Details"
         >
-          <UpdateExamnation data={examinationData} />
+          <UpdateExamnation
+            data={examinationData}
+            onClose={close}
+            setData={setData}
+          />
         </Modal>
         {notification && (
           <Notification
@@ -111,7 +109,6 @@ const DisplayExaminationsDetails = () => {
             <div>Report Type Name:{item.report_type_name}</div>
             <div>unit:{item.unit}</div>
             <div>category:{item.category}</div>
-
             <div>
               Normal Range:{item.normal_range_min} - {item.normal_range_max}
             </div>
@@ -119,17 +116,7 @@ const DisplayExaminationsDetails = () => {
               <Group>
                 <Button
                   variant="primary"
-                  onClick={() =>
-                    handleUpdateClick({
-                      exam_id: item.id,
-                      name: item.name,
-                      category: item.category,
-                      normal_range_min: item.normal_range_min,
-                      normal_range_max: item.normal_range_max,
-                      unit: item.unit,
-                      report_type_id: item.report_type_id,
-                    })
-                  }
+                  onClick={() => handleUpdateClick(item)}
                 >
                   Update
                 </Button>

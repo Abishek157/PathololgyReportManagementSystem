@@ -1,29 +1,20 @@
+import toast from "react-hot-toast";
+import fetchAPIHelper from "../utlis/fetchAPIHelper";
+
 const fetchUpdateExaminationAPI = async (payload) => {
   const { exam_id, ...details } = payload;
   console.log(exam_id, details);
 
-  try {
-    const response = await fetch(
-      ` http://localhost:3000/editExaminationDetails?examinationId=${exam_id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(details),
-        credentials: "include",
-      }
-    );
-    if (response.ok) {
-      const data = await response.json();
-      console.log(data);
-      return data;
-    } else {
-      console.error(response.statusText);
-    }
-  } catch (error) {
-    console.error("Error:", error);
+  const url = `http://localhost:3000/editExaminationDetails?examinationId=${exam_id}`;
+  const method = "PUT";
+  const result = await fetchAPIHelper(url, method, details);
+  if (result.success) {
+    toast.success(result.data.message);
+  } else {
+    toast.error(result.data.message);
   }
+
+  return result;
 };
 
 export default fetchUpdateExaminationAPI;

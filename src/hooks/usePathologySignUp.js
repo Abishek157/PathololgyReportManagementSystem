@@ -1,4 +1,5 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const usePathologySignUp = () => {
@@ -20,13 +21,13 @@ const usePathologySignUp = () => {
         },
         body: JSON.stringify(payload),
       });
+      const data = await response.json();
 
-      // Handle the response
       if (response.ok) {
-        const data = await response.json();
-        console.log("Login successful:", data);
-        naviagte("/login");
+        toast.success(`Sign Up successful`);
+        naviagte("/pathology-login");
       } else {
+        data.errors.map((error) => toast.error(error));
         console.error("Login failed:", response.statusText);
       }
     } catch (error) {

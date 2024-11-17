@@ -9,7 +9,6 @@ import {
 } from "@mantine/core";
 import classes from "../styles/Demo.module.css";
 import { useDisclosure } from "@mantine/hooks";
-
 import fetchDeletereportTypeByIdAPI from "../containers/fetchDeletereportTypeByIdAPI";
 import UpdateReportTypePage from "../components/UpdateReportTypePage";
 
@@ -39,26 +38,17 @@ const DisplayReportTypes = () => {
     fetchData();
   }, []);
 
-  if (!data) {
-    return <div>Loading...</div>;
-  }
-
   const handleUpdateClick = (data) => {
     setSelectedReportTypeData(data);
     open();
   };
-
-  const handleDelete = async (reportTypeId) => {
-    console.log(reportTypeId);
-
-    const result = await fetchDeletereportTypeByIdAPI(reportTypeId);
-
-    fetchData();
-  };
-
   const handleUpdateSuccess = () => {
     fetchData();
     close();
+  };
+  const handleDelete = async (reportTypeId) => {
+    const result = await fetchDeletereportTypeByIdAPI(reportTypeId);
+    fetchData();
   };
 
   return (

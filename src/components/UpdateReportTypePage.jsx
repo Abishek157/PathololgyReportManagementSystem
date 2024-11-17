@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import ReportTypefrom from "./ReportTypefrom";
-import { Button } from "@mantine/core";
+import { Button, TextInput } from "@mantine/core";
 import fetchUpdateReportTypeAPI from "../containers/fetchUpdateReportTypeAPI";
 
 const UpdateReportTypePage = ({ data, onUpdateSuccess }) => {
@@ -17,7 +16,12 @@ const UpdateReportTypePage = ({ data, onUpdateSuccess }) => {
 
   return (
     <>
-      <ReportTypefrom reportType={reportType} setReportType={setReportType} />
+      <TextInput
+        label="Enter the name of report Type"
+        placeholder="Report type name"
+        value={reportType}
+        onChange={(e) => setReportType(e.target.value)}
+      />
       <Button onClick={handleSubmit}>Update</Button>
     </>
   );

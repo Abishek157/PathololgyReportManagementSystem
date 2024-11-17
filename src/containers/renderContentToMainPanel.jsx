@@ -15,7 +15,7 @@ const renderContent = (selectedRoute, props) => {
     case "Dashboard":
       return <div>Welcome to the Dashboard</div>;
     case "ViewExaminations":
-      return <DisplayExaminationsDetails />;
+      return <DisplayExaminationsDetails/>;
     case "CreateExamination":
       return <AddExaminaitonsPage />;
     case "CreateReportType":

@@ -5,7 +5,6 @@ const fetchUpdateReportResultAPI = async (examination_id, reportvalue) => {
   const method = "PUT";
   const payload = { report_result: reportvalue };
   const result = await fetchAPIHelper(url, method, payload);
-  console.log(result);
   return result;
 };
 

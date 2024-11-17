@@ -1,33 +1,72 @@
-import { Button, Input, TextInput } from "@mantine/core";
+import { Button, TextInput } from "@mantine/core";
 import React, { useState } from "react";
 import fetchUpdateReportResultAPI from "../containers/fetchUpdateReportResultAPI";
 
-const EditPatientReportResultFrom = ({ examination, onClose }) => {
-  const [resultValue, setResultValue] = useState(examination.resultValue);
-  console.log(examination);
+const EditPatientReportResultFrom = ({
+  selectedExamination,
+  setSelectedExamination,
+  setData,
+  onClose,
+}) => {
+  const [resultValue, setResultValue] = useState(
+    selectedExamination.examination.result.report_result
+  );
+
   const handleResultChange = (event) => {
-    setResultValue(event.target.value);
+    const newResultValue = event.target.value;
+    setResultValue(newResultValue);
+    setSelectedExamination((prevState) => {
+      const updatedExamination = {
+        ...prevState,
+        examination: {
+          ...prevState.examination,
+          result: {
+            ...prevState.examination.result,
+            report_result: newResultValue,
+          },
+        },
+      };
+      return updatedExamination;
+    });
   };
-  const handleSetResultOnClick = async (examination_id, result_value) => {
+
+  const handleSetResultOnClick = async () => {
     const result = await fetchUpdateReportResultAPI(
-      examination_id,
-      result_value
+      selectedExamination.id,
+      resultValue
     );
+    console.log(result);
+
+    setData((prevData) => {
+      const updatedData = prevData.map((item) =>
+        item.id === selectedExamination.id
+          ? {
+              ...item,
+              examination: {
+                ...item.examination,
+                result: {
+                  ...item.examination.result,
+                  report_result: resultValue,
+                },
+              },
+            }
+          : item
+      );
+      return updatedData;
+    });
+
     onClose();
   };
+
   return (
     <>
       <TextInput
-        label={examination?.name}
+        label={selectedExamination.examination.examination_name}
         placeholder="Enter result value"
         value={resultValue}
-        onChange={(e) => handleResultChange(e)}
+        onChange={handleResultChange}
       />
-      <Button
-        onClick={() => handleSetResultOnClick(examination?.id, resultValue)}
-      >
-        Set Result
-      </Button>
+      <Button onClick={handleSetResultOnClick}>Set Result</Button>
     </>
   );
 };

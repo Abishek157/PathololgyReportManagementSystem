@@ -1,20 +1,9 @@
+import fetchAPIHelper from "../utlis/fetchAPIHelper";
+
 const fetchReportTypeAPI = async () => {
-  try {
-    const response = await fetch("http://localhost:3000/getReportTypes", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
-    if (response.ok) {
-      const data = await response.json();
-      return data;
-    } else {
-      console.error(response.statusText);
-    }
-  } catch (error) {
-    console.error("Error:", error);
-  }
+  const url = "http://localhost:3000/getReportTypes";
+  const method = "GET";
+  const result = await fetchAPIHelper(url, method);
+  return result.data.result;
 };
 export default fetchReportTypeAPI;

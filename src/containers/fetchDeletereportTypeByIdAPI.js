@@ -1,26 +1,14 @@
-async function fetchDeleteReportTypeByIdAPI(reportTypeId) {
-  try {
-    const response = await fetch(
-      `http://localhost:3000/removeReportType?reportTypeId=${reportTypeId}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      }
-    );
+import toast from "react-hot-toast";
+import fetchAPIHelper from "../utlis/fetchAPIHelper";
 
-    if (response.ok) {
-      const data = await response.json();
-      return data;
-    } else {
-      console.error("Failed to delete report type:", response.statusText);
-      return null;
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    return null;
+async function fetchDeleteReportTypeByIdAPI(reportTypeId) {
+  const url = `http://localhost:3000/removeReportType?reportTypeId=${reportTypeId}`;
+  const method = "DELETE";
+  const result = await fetchAPIHelper(url, method);
+  if (result.success) {
+    toast.success(result.data.message);
+  } else {
+    toast.error(result.data.message);
   }
 }
 

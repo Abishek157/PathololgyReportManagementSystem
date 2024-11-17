@@ -4,7 +4,7 @@ const initialData = {
   first_name: "",
   middle_name: "",
   last_name: "",
-  gender: "Male", // Set default gender to "Male"
+  gender: "Male",
   age: 0,
   examination_id: [],
 };

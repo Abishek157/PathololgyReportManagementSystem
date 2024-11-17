@@ -1,22 +1,14 @@
+import toast from "react-hot-toast";
+import fetchAPIHelper from "../utlis/fetchAPIHelper";
+
 const addReportTypeCall = async (payload) => {
-  try {
-    const response = await fetch("http://localhost:3000/addReportType", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-      credentials: "include",
-    });
-    if (response.ok) {
-      const data = await response.json();
-      console.log(data);
-      return data;
-    } else {
-      console.error(response.statusText);
-    }
-  } catch (error) {
-    console.error("Error:", error);
+  const url = `http://localhost:3000/addReportType`;
+  const method = "POST";
+  const result = await fetchAPIHelper(url, method, payload);
+  if (result.success) {
+    toast.success(result.data.message);
+  } else {
+    toast.error(result.data.message);
   }
 };
 export default addReportTypeCall;

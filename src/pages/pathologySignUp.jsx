@@ -9,7 +9,6 @@ const PathologySignup = () => {
   const { email, setEmail, password, setPassword, handleSubmit } =
     usePathologySignUp();
   const navigate = useNavigate();
-
   return (
     <Paper className="login-container" padding="xl" radius="md" withBorder>
       <Text size="lg" fw={500} align="center" mb="md">
@@ -36,7 +35,7 @@ const PathologySignup = () => {
         <div className="login-actions">
           <Text size="sm" className="register-link">
             Already have an account?
-            <a onClick={() => navigate("/Pathologylogin")}>Login</a>
+            <a onClick={() => navigate("/pathology-login")}>Login</a>
           </Text>
           <Button type="submit" radius="md" className="login-button">
             Sign Up

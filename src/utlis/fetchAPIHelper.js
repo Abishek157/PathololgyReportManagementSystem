@@ -10,17 +10,29 @@ const fetchAPIHelper = async (url, method, payload = null) => {
     if (payload) {
       options.body = JSON.stringify(payload);
     }
+
     const response = await fetch(url, options);
+    const data = await response.json();
+
     if (response.ok) {
-      const data = await response.json();
-      return data;
+      return {
+        success: true,
+        message: "Request successful",
+        data: data,
+      };
     } else {
-      console.error(`Failed to ${method} data:`, response.statusText);
-      return null;
+      return {
+        success: false,
+        message: `Failed to ${method} data: ${response.statusText}`,
+        data: data,
+      };
     }
   } catch (error) {
     console.error("Error:", error);
-    return null;
+    return {
+      success: false,
+      message: `Error: ${error.message}`,
+    };
   }
 };
 

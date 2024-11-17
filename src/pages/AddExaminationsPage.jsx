@@ -1,6 +1,5 @@
 import { useState } from "react";
-import fetchReportTypeAPI from "../containers/fetchReportTypesAPI";
-import { Button } from "@mantine/core";
+import { Button, Container } from "@mantine/core";
 import addExaminationAPI from "../containers/addExaminationAPI";
 import ExaminationForm from "../components/ExaminationForm";
 
@@ -29,25 +28,27 @@ const AddExaminaitonsPage = () => {
   };
   return (
     <>
-      <ExaminationForm
-        name={name}
-        setName={setName}
-        category={category}
-        setCategory={setCategory}
-        normalRangeMin={normalRangeMin}
-        setNormalRangeMin={setNormalRangeMin}
-        normalRangeMax={normalRangeMax}
-        setNormalRangeMax={setNormalRangeMax}
-        unit={unit}
-        setUnit={setUnit}
-        reportTypes={reportTypes}
-        setreportTypes={setreportTypes}
-        selectedReportTypeId={selectedReportTypeId}
-        setSelectedReportTypeId={setSelectedReportTypeId}
-        selectedReportTypeName={selectedReportTypeName}
-        setSelectedReportTypeName={setSelectedReportTypeName}
-      />
-      <Button onClick={handleSubmit}>Add Examination</Button>
+      <Container>
+        <ExaminationForm
+          name={name}
+          setName={setName}
+          category={category}
+          setCategory={setCategory}
+          normalRangeMin={normalRangeMin}
+          setNormalRangeMin={setNormalRangeMin}
+          normalRangeMax={normalRangeMax}
+          setNormalRangeMax={setNormalRangeMax}
+          unit={unit}
+          setUnit={setUnit}
+          reportTypes={reportTypes}
+          setreportTypes={setreportTypes}
+          selectedReportTypeId={selectedReportTypeId}
+          setSelectedReportTypeId={setSelectedReportTypeId}
+          selectedReportTypeName={selectedReportTypeName}
+          setSelectedReportTypeName={setSelectedReportTypeName}
+        />
+        <Button onClick={handleSubmit}>Add Examination</Button>
+      </Container>
     </>
   );
 };

@@ -5,8 +5,7 @@ import renderContent from "../containers/renderContentToMainPanel";
 import useRouteStore from "../hooks/useRouteStore"; // Zustand store
 
 const MainPage = () => {
-  const { selectedRoute, setSelectedRoute } = useRouteStore(); // Get Zustand state
-
+  const { selectedRoute, setSelectedRoute } = useRouteStore();
   return (
     <>
       <div className="Main">

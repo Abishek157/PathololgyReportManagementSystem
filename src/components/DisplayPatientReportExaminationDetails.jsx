@@ -9,7 +9,7 @@ const DisplayPatientReportExaminationDetails = ({ patientReportId }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [opened, { open, close }] = useDisclosure(false);
-  const [resultData, setResultData] = useState({});
+  const [selectedExamination, setSelectedExamination] = useState(null);
 
   const fetch = async () => {
     setLoading(true);
@@ -58,13 +58,8 @@ const DisplayPatientReportExaminationDetails = ({ patientReportId }) => {
       </div>
     );
   }
-  const handleUpdateResultOnClick = (
-    examinationId,
-    examinationName,
-    resultValue
-  ) => {
-    const payload = { id: examinationId, name: examinationName, resultValue };
-    setResultData(payload);
+  const handleUpdateResultOnClick = (examination) => {
+    setSelectedExamination(examination);
     open();
   };
   return (
@@ -75,7 +70,12 @@ const DisplayPatientReportExaminationDetails = ({ patientReportId }) => {
         title="Update Report Result"
         centered
       >
-        <EditPatientReportResultFrom examination={resultData} onClose={close} />
+        <EditPatientReportResultFrom
+          selectedExamination={selectedExamination}
+          setSelectedExamination={setSelectedExamination}
+          setData={setData}
+          onClose={close}
+        />
       </Modal>
       <Table>
         <Table.Thead>
@@ -92,15 +92,7 @@ const DisplayPatientReportExaminationDetails = ({ patientReportId }) => {
                 {examination.examination.result.report_result}
               </Table.Td>
               <Table.Td>
-                <Button
-                  onClick={() =>
-                    handleUpdateResultOnClick(
-                      examination.id,
-                      examination.examination.examination_name,
-                      examination.examination.result.report_result
-                    )
-                  }
-                >
+                <Button onClick={() => handleUpdateResultOnClick(examination)}>
                   Update Result
                 </Button>
               </Table.Td>
