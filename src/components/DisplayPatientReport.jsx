@@ -1,33 +1,60 @@
 import { useEffect, useState } from "react";
-import { Button, Table, Loader, Text, Input } from "@mantine/core";
+import {
+  Button,
+  Table,
+  Loader,
+  Text,
+  Input,
+  Container,
+  Pagination,
+} from "@mantine/core";
 import fetchReportDetailsAPI from "../containers/fetchReportDetailsAPI";
 import useRouteStore from "../hooks/useRouteStore";
 import useReportStore from "../hooks/useReportStore";
 import { mergeSort, comparator } from "../utlis/Algorithm/mergeSort";
 import binarySearch from "../utlis/Algorithm/binarySearch";
+import { BsSortAlphaDown } from "react-icons/bs";
+import { FaRegFilePdf } from "react-icons/fa6";
 
 const DisplayPatientReport = () => {
-  const { selectedRoute, setSelectedRoute } = useRouteStore();
+  const { setSelectedRoute } = useRouteStore();
   const [dataLength, setDataLength] = useState(0);
   const { setReport } = useReportStore();
   const [patientReports, setPatientReports] = useState([]);
+  const [originalReports, setOriginalReports] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [soretd, setSorted] = useState(false);
 
-  const fetch = async (page = 1) => {
-    setLoading(true);
+  const justFetchData = async (page) => {
     try {
       const result = await fetchReportDetailsAPI(page);
-      const report = result.patientsReport;
+      const reports = result.patientsReport;
       setDataLength(Number(result.pagination.total));
       setTotalPages(Math.ceil(result.pagination.total / 5));
-      const sortedReport = mergeSort(report, comparator);
-      setPatientReports(sortedReport);
+      return reports;
+    } catch (error) {
+      setError("Failed to fetch patient reports line 39.");
+    }
+  };
+  const fetch = async (page) => {
+    setLoading(true);
+    try {
+      const report = await justFetchData(page);
+
+      setOriginalReports(report);
+      setPatientReports(report);
+      if (soretd) {
+        const sortedReport = mergeSort(report, comparator);
+        setPatientReports(sortedReport);
+      } else {
+        setPatientReports(report);
+      }
     } catch (err) {
-      setError("Failed to fetch patient reports.");
+      setError("Failed to fetch patient reports. 56");
     } finally {
       setLoading(false);
     }
@@ -54,16 +81,17 @@ const DisplayPatientReport = () => {
       <Table.Td>{report.reportDetails.status}</Table.Td>
       <Table.Td>
         <Button onClick={() => handleOnClick(report)}>View Details</Button>
+        <FaRegFilePdf style={{ marginLeft: "10px" }} />
       </Table.Td>
     </Table.Tr>
   ));
 
   const handleSearch = async () => {
     let found = false;
-    // Search across pages until found or all pages are searched
-    for (let page = currentPage; page <= totalPages; page++) {
-      await fetch(page);
-      const result = binarySearch(patientReports, searchQuery);
+    for (let page = 1; page <= totalPages; page++) {
+      const reports = await justFetchData(page);
+      const sortedReport = mergeSort(reports, comparator);
+      const result = binarySearch(sortedReport, searchQuery);
       if (result) {
         console.log("Found report:", result);
         setPatientReports([result]);
@@ -73,60 +101,91 @@ const DisplayPatientReport = () => {
     }
     if (!found) {
       console.log("Report not found");
-      setError("No matching report found.");
     }
   };
 
   return (
     <>
-      <Input
-        type="text"
-        placeholder="Search by name"
-        value={searchQuery}
-        onChange={(e) => {
-          if (e.target.value === "") {
-            fetch(currentPage);
-          }
-          setSearchQuery(e.target.value);
-        }}
-      />
-      <Button onClick={handleSearch}>Search</Button>
-      <Table.ScrollContainer minWidth={800} type="native">
-        <Table>
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Th>Report ID</Table.Th>
-              <Table.Th>Patient Name</Table.Th>
-              <Table.Th>Age</Table.Th>
-              <Table.Th>Gender</Table.Th>
-              <Table.Th>Status</Table.Th>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>{rows}</Table.Tbody>
-        </Table>
-      </Table.ScrollContainer>
-      {loading && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "20px",
+      <Container>
+        <h1>Reports</h1>
+        <Input
+          type="text"
+          placeholder="Search by name"
+          value={searchQuery}
+          onChange={(e) => {
+            if (e.target.value === "") {
+              fetch(currentPage);
+            }
+            setSearchQuery(e.target.value);
           }}
+        />
+        <Button
+          onClick={handleSearch}
+          style={{ marginBottom: "10px", marginTop: "10px" }}
         >
-          <Loader />
-        </div>
-      )}
-      {error && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "20px",
-          }}
-        >
-          <Text color="red">{error}</Text>
-        </div>
-      )}
+          Search
+        </Button>
+        <Table.ScrollContainer minWidth={800} type="native">
+          <Table withTableBorder>
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th>Report ID</Table.Th>
+                <Table.Th>
+                  Patient Name
+                  <BsSortAlphaDown
+                    style={{ cursor: "pointer", marginLeft: "10px" }}
+                    onClick={() => {
+                      if (!soretd) {
+                        const sortedReport = mergeSort(
+                          patientReports,
+                          comparator
+                        );
+                        setPatientReports(sortedReport);
+                        setSorted(true);
+                      } else {
+                        setPatientReports(originalReports);
+                        setSorted(false);
+                      }
+                    }}
+                  />
+                </Table.Th>
+                <Table.Th>Age</Table.Th>
+                <Table.Th>Gender</Table.Th>
+                <Table.Th>Status</Table.Th>
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>{rows}</Table.Tbody>
+          </Table>
+        </Table.ScrollContainer>
+        {loading && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "20px",
+            }}
+          >
+            <Loader />
+          </div>
+        )}
+        {error && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "20px",
+            }}
+          >
+            <Text color="red">{error}</Text>
+          </div>
+        )}
+        <Pagination
+          total={totalPages}
+          size="sm"
+          style={{ marginTop: "10px" }}
+          onChange={(e) => setCurrentPage(e)}
+        />
+      </Container>
     </>
   );
 };

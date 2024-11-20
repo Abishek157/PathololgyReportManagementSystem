@@ -15,7 +15,7 @@ const renderContent = (selectedRoute, props) => {
     case "Dashboard":
       return <div>Welcome to the Dashboard</div>;
     case "ViewExaminations":
-      return <DisplayExaminationsDetails/>;
+      return <DisplayExaminationsDetails />;
     case "CreateExamination":
       return <AddExaminaitonsPage />;
     case "CreateReportType":
@@ -24,8 +24,7 @@ const renderContent = (selectedRoute, props) => {
       return <DisplayReportTypes />;
     case "CreateReport":
       return <CreateReportPatientPage />;
-    case "Patients":
-      return <div>select to add remove update or view patinet</div>;
+
     case "Admin":
       return <div>Admin Panel</div>;
     default:

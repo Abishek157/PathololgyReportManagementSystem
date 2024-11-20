@@ -2,7 +2,6 @@ export default function binarySearch(arr, query) {
   let left = 0;
   let right = arr.length - 1;
 
-  // Trim the query to avoid leading/trailing spaces
   const trimmedQuery = query.trim().toLowerCase();
   console.log(trimmedQuery);
 
@@ -17,6 +16,7 @@ export default function binarySearch(arr, query) {
         .trim()
         .toLowerCase();
     }
+    console.log(fullName);
 
     if (fullName === trimmedQuery) {
       return arr[mid];

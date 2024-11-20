@@ -29,6 +29,7 @@ const AddExaminaitonsPage = () => {
   return (
     <>
       <Container>
+        <h1>Add Reports</h1>
         <ExaminationForm
           name={name}
           setName={setName}
