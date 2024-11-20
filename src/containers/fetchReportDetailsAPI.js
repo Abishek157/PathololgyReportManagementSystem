@@ -1,7 +1,7 @@
 import fetchAPIHelper from "../utlis/fetchAPIHelper";
 
-const fetchReportDetailsAPI = async () => {
-  const url = " http://localhost:3000/getPatientReportDetails";
+const fetchReportDetailsAPI = async (page = 1) => {
+  const url = `http://localhost:3000/getPatientReportDetails?page=${page}&limit=5`;
   const method = "GET";
   const result = await fetchAPIHelper(url, method);
   return result.data;

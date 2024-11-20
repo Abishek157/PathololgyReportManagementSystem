@@ -25,7 +25,7 @@ const usePathologySignUp = () => {
 
       if (response.ok) {
         toast.success(`Sign Up successful`);
-        naviagte("/pathology-login");
+        naviagte("/pathology-login        ");
       } else {
         data.errors.map((error) => toast.error(error));
         console.error("Login failed:", response.statusText);

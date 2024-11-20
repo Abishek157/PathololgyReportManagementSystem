@@ -116,23 +116,6 @@ const Sidebar = ({ selectedRoute, setSelectedRoute }) => {
           )}
         </div>
       )}
-
-      <RouteButton
-        Icon={FiUsers}
-        selected={selectedRoute === "Patients"}
-        title="Patients"
-        onClick={() => toggleDropdown("patient")}
-      />
-      {dropdownStates.patient && (
-        <div className="dropdown">
-          <RouteButton
-            Icon={FiFile}
-            selected={selectedRoute === "ViewPatients"}
-            title="View Patients"
-            onClick={handleOnClick("ViewPatients")}
-          />
-        </div>
-      )}
     </div>
   );
 };
